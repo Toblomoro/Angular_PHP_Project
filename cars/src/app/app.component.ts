@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { Car } from './car';
 import { CarService } from './car.service';
@@ -6,32 +7,55 @@ import { CarService } from './car.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit{
+
+export class AppComponent implements OnInit {
   cars: Car[] = [];
+  car: Car =  {model:'', price:0};
+
   error = '';
   success = '';
 
-  constructor(private carService: CarService) {
-  }
-        
+  constructor(private carService: CarService) {}
+
   ngOnInit() {
     this.getCars();
   }
-        
+
   getCars(): void {
     this.carService.getAll().subscribe(
       (data: Car[]) => {
         this.cars = data;
-        this.success = 'successful retrieval of the list';
+        this.success = 'Success in retrieving the list';
       },
       (err) => {
         console.log(err);
-        this.error = err;
+        this.error = err.message;
       }
     );
   }
 
-  
+  addCar(f: NgForm) {
+    this.resetAlerts();
+
+    this.carService.store(this.car).subscribe(
+      (res: Car) => {
+        // Update the list of cars
+        this.cars.push(res)
+
+        // Inform the user
+        this.success = 'Created successfully';
+
+        // Reset the form
+        f.reset();
+      },
+      (err) => (this.error = err.message)
+    );
+  }
+
+  resetAlerts() {
+    this.error = '';
+    this.success = '';
+  }
 }
