@@ -68,4 +68,18 @@ export class AppComponent implements OnInit {
   resetAlerts() {
     this.error = '';
   }
+
+  deleteCar(id: number) {
+    this.resetAlerts();
+    this.carService.delete(id).subscribe(
+      (res) => {
+        this.cars = this.cars.filter(function (item) {
+          return item['id'] && +item['id'] !== +id;
+        });
+
+        this.success = 'Deleted successfully';
+      },
+      (err) => (this.error = err)
+    );
+}
 }

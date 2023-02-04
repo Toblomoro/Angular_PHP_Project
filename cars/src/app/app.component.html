@@ -68,6 +68,12 @@
                class="btn btn-success btn-sm"
                [disabled]="model.invalid || price.invalid"
                (click)="updateCar(model, price, item.id)">
+         
+        <input type="button"
+               value="Delete"
+               class="btn btn-danger btn-sm"
+               (click)="deleteCar(item.id? item.id:0)">
+
       </div>
     </div>
   </div>
