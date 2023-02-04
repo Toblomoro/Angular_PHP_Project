@@ -9,10 +9,9 @@ import { CarService } from './car.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-
 export class AppComponent implements OnInit {
   cars: Car[] = [];
-  car: Car =  {model:'', price:0};
+  car: Car = { model: '', price: 0 };
 
   error = '';
   success = '';
@@ -30,7 +29,6 @@ export class AppComponent implements OnInit {
         this.success = 'Success in retrieving the list';
       },
       (err) => {
-        console.log(err);
         this.error = err.message;
       }
     );
@@ -42,7 +40,7 @@ export class AppComponent implements OnInit {
     this.carService.store(this.car).subscribe(
       (res: Car) => {
         // Update the list of cars
-        this.cars.push(res)
+        this.cars.push(res);
 
         // Inform the user
         this.success = 'Created successfully';
@@ -54,8 +52,20 @@ export class AppComponent implements OnInit {
     );
   }
 
+  updateCar(name: any, price: any, id: any) {
+    this.resetAlerts();
+
+    this.carService
+      .update({ model: name.value, price: price.value, id: +id })
+      .subscribe(
+        (res) => {
+          this.success = 'Updated successfully';
+        },
+        (err) => (this.error = err)
+      );
+  }
+
   resetAlerts() {
     this.error = '';
-    this.success = '';
   }
 }

@@ -27,4 +27,8 @@ export class CarService {
       })
     );
   }
+
+  update(car: Car) {
+    return this.http.put(`${this.baseUrl}/update`, { data: car });
+  }
 }
