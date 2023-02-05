@@ -22,6 +22,10 @@ export class AppComponent implements OnInit {
     this.getCars();
   }
 
+  resetAlerts() {
+    this.error = '';
+  }
+
   getCars(): void {
     this.carService.getAll().subscribe(
       (data: Car[]) => {
@@ -65,10 +69,6 @@ export class AppComponent implements OnInit {
       );
   }
 
-  resetAlerts() {
-    this.error = '';
-  }
-
   deleteCar(id: number) {
     this.resetAlerts();
     this.carService.delete(id).subscribe(
@@ -81,5 +81,5 @@ export class AppComponent implements OnInit {
       },
       (err) => (this.error = err)
     );
-}
+  }
 }
